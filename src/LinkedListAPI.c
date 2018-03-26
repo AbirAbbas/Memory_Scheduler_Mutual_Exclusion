@@ -327,3 +327,11 @@ void* findElement(List list, bool (*customCompare)(const void* first,const void*
 	}
 	return NULL;
 }
+
+void removeHead (List * list) {
+	if (list->head != NULL) list->head = list->head->next;
+}
+
+void removeTail (List * list) {
+	if (list->tail != NULL) list->tail = list->head->previous;
+}

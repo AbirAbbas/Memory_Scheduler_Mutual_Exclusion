@@ -199,4 +199,9 @@ int getLength(List list);
  **/
 void* findElement(List list, bool (*customCompare)(const void* first,const void* second), const void* searchRecord);
 
+void removeHead (List * list);
+
+void removcTail (List * list);
+
+
 #endif

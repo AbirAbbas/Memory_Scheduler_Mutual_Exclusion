@@ -1,0 +1,99 @@
+****************************************************
+Abir Abbas         						     0955448
+CIS3110 - Assignment 3
+2018-03-26                        abbasa@uoguelph.ca
+****************************************************
+
+************
+Compilation
+************
+make - compiles all required files
+
+***********************
+Running the program(s)
+***********************
+
+Dining Philosophers :
+
+./dine (number of philosophers) (number of times to eat)
+
+Memory scheduler : 
+
+./holes (fileName.txt)
+
+*****************
+References
+*****************
+The LinkedList library provided to us from the course CIS2750 by Dennis Nikitenko was used as my
+required data structure.
+
+*****************
+Limitations
+*****************
+- dining philosopher must have at least 2 (number of philosophers and time eaten) integer command line arguments and will not work otherwise
+- holes requires a file that exists and is formatted correctly and the filname must the only command line argument
+
+*****************
+Assumptions
+*****************
+- I will strictly be following the method the prof states within his assignment/guidelines
+- It is assumed that the philosophers start out thinking
+- It is assumed that philosophers require both forks to eat
+- It is assumed that memory starts out empty and blocks are formed throughout the scheduling
+- It is assumed that memory sizes will not exceed 128 per process
+- It is assumed that the files exist, are valid, and put as the only command line argument for ./holes
+
+*****************
+Algorithm
+*****************
+
+Dining Philosophers : 
+
+The algorithm I used is a very simple and uses min and max functions to assign left and right forks in order to avoid deadlocks.
+
+Algorithm : 
+
+Initiate processes based on the number of philosophers. (ie: 3 philosophers will create 3 processes ready to be executed)
+Create an array of semaphores that are initialized with the value 1 (ie: 3 philosophers will create an array of semaphore size 3 each holding the value 1)
+Excecute processes all at once
+Each process will adhere to the semaphore based on their left and rights
+
+    Each processor :
+    Calculate left and right using the following :
+        left : min(id, id + (1 MOD total philosophers)) 
+        right : max(id, id + (1 MOD total philosophers)) 
+    this will ensure that the forks that the philosopher locks are the ones that are to the left and right of their position
+    the min and max ensures that the philosopher in the very end prioritizes his left fork over his right, while the other
+    philosophers prioritize their right fork over their left. Thus, once the last philosopher needs to eat, he cannot hog up a
+    fork leaving everyone else ona  deadlocks
+
+Exit when the process has looped the amount of times the user specified.
+
+
+Memory Scheduler : 
+
+The method I used for all 4 algorithm is very generic and have minor differences, I will put a * near the minor difference and it is assumed
+that everything else will remain the same. 
+
+Algorithm : 
+
+Initiate an array of size 128 that will be used as a memory map for the memory scheduler
+fill the array with -1's which represent empty memory
+read file input and create a linked list with all processes called processList
+loop untill the processList is empty 
+
+    *find the position in memory using one of the 4 algorithm to ensure the hole has enough space to hold the proces
+
+if found then fill the hole with the process and leave any unused space as -1's, and remove the process from processList
+also keep track of time the process was inserted
+print the required data as per the assignment specifications 
+
+if no position was found then swapping is required
+
+    find the oldest process within the memory map and push it back into the processList
+
+once loop ends, print out the averages required as per the assignment specifications
+
+
+
+

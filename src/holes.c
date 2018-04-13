@@ -4,6 +4,8 @@
 #include "LinkedListAPI.h"
 
 int main (int argc, char ** argv) {
+	
+	//running scheduler with same initializing but with different scheduling functions
 		
 	runScheduler(argv, firstFit);
 	printf("\n\n");
@@ -16,6 +18,8 @@ int main (int argc, char ** argv) {
 	return 0;
 }
 
+//initializes scheduler with a linked list used somewhat like a stack, push and pop replaced with
+//removeHead(pop) and insertBack(push)
 void runScheduler(char ** argv, void (*scheduler)(List * processList, process * memoryList)) {
 	FILE * inFile = fopen(argv[1], "r");
 	
@@ -46,6 +50,9 @@ void runScheduler(char ** argv, void (*scheduler)(List * processList, process * 
 	clearList(&processList);
 }
 
+
+//all schedulers are generic except the difference being their find empty space functions
+//each have their own find empty space function that finds the one using their corresponding algorithm
 void firstFit(List * processList, process * memoryList) {
 	
 	printf("First Fit Algorithm\n");
@@ -412,6 +419,8 @@ process * createProcess (char ID[], int size) {
 	return p;
 }
 
+//dummy function to satisfy the linked list api
+
 char * dummyPrint (void * toBePrinted) {
 	char * temp = calloc(1024, sizeof(char));
 	
@@ -433,6 +442,8 @@ int dummyCompare (const void * first, const void * second) {
 	return 0;
 }
 
+
+//returns number of holes
 int numberOfHoles (process * memoryList) {
 	
 	int startHole = 0;
@@ -452,6 +463,7 @@ int numberOfHoles (process * memoryList) {
 	return holeCount;
 }
 
+//returns number of processes
 int numberOfProcesses (process * memoryList) {
 	
 	char temp[1024];
@@ -469,6 +481,7 @@ int numberOfProcesses (process * memoryList) {
 	return processCount;
 }
 
+//returns oldest process
 char * findOldest (process * memoryList) {
 	
 	char * temp = calloc(1024, sizeof(char));
@@ -484,6 +497,7 @@ char * findOldest (process * memoryList) {
 	return temp;
 }
 
+//firstFit
 int findFirstEmptySpot (process * memoryList, int size) {
 	
 	for (int i = 0; i < 128; i ++) {
@@ -494,6 +508,7 @@ int findFirstEmptySpot (process * memoryList, int size) {
 	return 128;
 }
 
+//nextFit
 int findNextEmptySpot (process * memoryList, int currentPosition ,int size) {
 	
 	//scan from now till end
@@ -513,6 +528,7 @@ int findNextEmptySpot (process * memoryList, int currentPosition ,int size) {
 	return 128;
 }
 
+//worstFit
 int findLargestEmptySpot (process * memoryList, int size) {
 	
 	int index = 0;
@@ -538,6 +554,7 @@ int findLargestEmptySpot (process * memoryList, int size) {
 
 }
 
+//bestFit
 int findBestEmptySpot (process * memoryList, int size) {
 	
 	int index = 0;
@@ -565,6 +582,7 @@ int findBestEmptySpot (process * memoryList, int size) {
 
 }
 
+//returns the size of the empty space
 int findEmptySpace (process * memoryList, int position) {
 	int counter = 0;
 	for (int i = position; i < 128; i ++) {
@@ -577,6 +595,7 @@ int findEmptySpace (process * memoryList, int position) {
 	return counter;
 }
 
+//finds the first index of a process by its ID
 int returnProcessIndexByID(process * memoryList, char * ID) {
 	for (int i = 0; i < 128; i ++) {
 		if (memoryList[i].size != -1 && strcmp(memoryList[i].ID, ID) == 0) {
@@ -586,6 +605,7 @@ int returnProcessIndexByID(process * memoryList, char * ID) {
 	return -1;
 }
 
+//returns total memory used
 double checkmemUsage (process * memoryList) {
 	int totalusage = 0;
 	

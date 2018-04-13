@@ -40,20 +40,28 @@ int main(int argc, char *argv[]) {
 
 void * philosopher (void * value) {
 	int * id = value;
+	//min value for left fork, to avoid deadlock
 	int left = minValue(*id, (*id + 1) % total);
+	//max value for right fork to avoid deadlock
 	int right = maxValue(*id, (*id + 1) % total);
 	int counter = 0;
+	
+	//think
+	printf("Philosopher %d thinking\n", *id + 1);
+	
 	while (counter < max) {
-		//think
-		printf("Philosopher %d thinking\n", *id + 1);
 		//lock
 		pthread_mutex_lock(&(arr[right]));
 		pthread_mutex_lock(&(arr[left]));
 		//eat
 		printf("Philosopher %d eating\n", *id + 1);
 		sleep(1);
+		//back to thinking
+		printf("Philosopher %d thinking\n", *id + 1);
 		pthread_mutex_unlock(&(arr[left]));
 		pthread_mutex_unlock(&(arr[right]));
+		
+		sleep(1);
 		//release
 		counter++;
 	}
